@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hao.dom.mapper.UserMapper">
+    <!-- 查询所有 -->
+    <select id="findAll" resultType="User">
+        select * from user
+    </select>
+    <!--新增用户-->
+    <insert id="savaUser" parameterType="com.hao.dom.User">
+        insert into user(username,birthday,sex,address) values (#{username},#{birthday},#{sex},#{address})
+    </insert>
+
+    <!--更新用户-->
+    <update id="updateUser" parameterType="com.hao.dom.User">
+        update user set username= #{username} where id = #{id}
+    </update>
+    
+    <!--删除用户-->
+    <delete id="deleteUser" parameterType="java.lang.Integer">
+        delete from user where id = #{id}
+    </delete>
+
+    <!--多条件查询方式一-->
+    <select id="findByIdAndUsername1" resultType="user">
+        select * from USER where id = #{id} and username = #{username}
+    </select>
+    
+    <!--m模糊查询一-->
+    <select id="findByUsername" resultType="user" parameterType="string">
+        select * from user where username like '${value}'
+    </select>
+
+    <insert id="saveUser" parameterType="user" useGeneratedKeys="true" keyProperty="id">
+        insert into user(username,birthday,sex,address) values (#{username},#{birthday},#{sex},#{address})
+    </insert>
+
+    <insert id="saveUser2" parameterType="user">
+        <selectKey order="AFTER" keyColumn="id" keyProperty="id" resultType="int">
+            select LAST_INSERT_ID();
+        </selectKey>
+        insert into user(username,birthday,sex,address) values (#{username},#{birthday},#{sex},#{address})
+    </insert>
+    
+    <select id="foreachUser" parameterType="int" resultType="user">
+        select * from user
+        <where>
+            <foreach collection="array" open="id in (" close=")" item="id" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+    
+</mapper>

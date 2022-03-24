@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration> <!--环境配置-->
+    <!--加载properties文件-->
+    <properties resource="jdbc.properties"></properties>
+
+    <!--设置别名-->
+    <typeAliases>
+<!--        <typeAlias type="com.hao.dom.User" alias="user"></typeAlias>-->
+        <package name="com.hao.dom"/>
+    </typeAliases>
+    
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageHelper">
+            <property name="dialect" value="mysql"/>
+        </plugin>
+    </plugins>
+
+    <!--environments: 运行环境-->
+    <environments default="development">
+        <environment id="development">
+            <!--当前的事务事务管理器是JDBC-->
+            <transactionManager type="JDBC"></transactionManager>
+            <!--数据源信息 POOLED：使用mybatis的连接池-->
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!--引入映射配置文件-->
+    <mappers>
+        <mapper resource="com/hao/dom/mapper/UserMapper.xml"></mapper>
+    </mappers>
+</configuration>
